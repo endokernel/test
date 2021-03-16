@@ -14,6 +14,3 @@ yes '' | make oldconfig
 make clean
 make -j $(getconf _NPROCESSORS_ONLN) deb-pkg LOCALVERSION=-cet
 
-cd ..
-sudo dpkg -i linux-image-5.9.6-arch1-cet_5.9.6-arch1-cet-1_amd64.deb linux-headers-5.9.6-arch1-cet_5.9.6-arch1-cet-1_amd64.deb
-

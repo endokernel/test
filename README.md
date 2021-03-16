@@ -4,10 +4,10 @@ This suite includes IntraVirt source code, all the test code and the dependent l
 ### Hardware
 - CPU: Intel TigerLake architecture with CET(TM)  and MPK(TM) enabled
 - RAM: 8GB and more
-- Storage: At least 25Gbytes free space
+- Storage: At least 50Gbytes free space
 - Internet access
 ### Software
-- Operating System: Ubuntu 21.10 X86_64
+- Operating System: Ubuntu 20.10 X86_64
 - IntraVirt gitlab access
 
 ## Directory structure
@@ -85,8 +85,8 @@ The kernel is originally forked from Arch Linux source tree, but it works fine i
 ```
 $ cd script
 $ ./kernel.sh           # This will take a while
-$ cd ..
-$ sudo dpkg -i ~~~~~~~~~~
+$ cd ../src
+$ sudo dpkg -i linux-image-5.9.8-arch1-cet_5.9.8-arch1-cet-1_amd64.deb linux-headers-5.9.8-arch1-cet_5.9.8-arch1-cet-1_amd64.deb
 $ sudo grub-mkconfig -o /boot/grub/grub.cfg
 $ reboot
 ```

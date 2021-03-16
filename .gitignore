@@ -1,0 +1,16 @@
+src/
+glibc-*
+result/
+*.deb
+www
+libs/
+dispatch_*
+random*
+queen
+seccomp*
+testcases/test_file*
+conf/nginx.conf
+conf/lighttpd.conf
+bin/
+safe-sand/
+linux-5.9.8/
