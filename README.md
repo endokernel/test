@@ -186,7 +186,7 @@ The result CSV file is stored in `result` directory. File names are `curl.csv`
 ### sandbox, safebox
 ```
 $ cd testcases
-$ python3 safesand.py	    # This will take a while
+$ python3 safe_sand.py	    # This will take a while
 ```
 The result CSV file is stored in `result` directory. File names are `safesand_[setupname].csv`
 
