@@ -184,7 +184,11 @@ $ python3 curl.py           # This will take a while
 The result CSV file is stored in `result` directory. File names are `curl.csv`
 
 ### sandbox, safebox
-TBA
+```
+$ cd testcases
+$ python3 safesand.py	    # This will take a while
+```
+The result CSV file is stored in `result` directory. File names are `safesand_[setupname].csv`
 
 ## Cleaning up
 You can simply run a clean up script. It will remove all the produced files and restore back to the original.
