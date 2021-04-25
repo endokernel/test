@@ -34,12 +34,12 @@ This suite includes IntraVirt source code, all the test code and the dependent l
 +--- dispatch_eiv       # IntraVirt binary for user-dispatch and EIV
 +-+- glibc-cet          # CET enabled GLIBC for IntraVirt
 | +--- build            # Glibc build directory
-| +--- install          # Glibc install directory
-| +--- lib              # All the dependent libraries with CET
-+-+- glibc-cet          # CET disabled GLIBC for IntraVirt
+| +-+- install          # Glibc install directory
+|   +--- lib            # All the dependent libraries with CET. IntraVirt does not support ld.so.conf
++-+- glibc-nocet          # CET disabled GLIBC for IntraVirt
 | +--- build            # Glibc build directory
-| +--- install          # Glibc install directory
-| +--- lib              # All the dependent libraries without CET
+| +-+- install          # Glibc install directory
+|   +--- lib            # All the dependent libraries without CET. IntraVirt does not support ld.so.conf
 +-+- libs               # Additional storage for dependent libraries
 | +--- cet              # All the libraries with CET
 | +--- nocet            # All the libraries without CET

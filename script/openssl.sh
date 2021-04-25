@@ -24,7 +24,7 @@ fi
 # OpenSSL does not support CET. Assembly code of OpenSSL does not have endbranch instruction.
 # We use non-cet version at the moment.
 
-:'
+
 # Build for CET version
 if ! [ -f "../glibc-cet/install/lib/libssl.so.1.1" ]
 then
@@ -37,4 +37,4 @@ then
     cd ..
     rm -rf openssl-1.1.1i
 fi
-'
+
