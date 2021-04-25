@@ -61,6 +61,7 @@ This suite includes IntraVirt source code, all the test code and the dependent l
 +--- seccomp_cet        # IntraVirt binary for Seccomp and CET
 +-+- src                # Source code directory
 | +--- intravirt-glibc  # Source for IntraVirt enabled GLIBC
+| +--- intravirt-kernel # Source for IntraVirt kernel with CET patches and user-dispatch patches
 | +--- intravirt-src    # Source for IntraVirt
 +-+- testcases          # Test case scripts
 | +--- inactive         # Obsolete test case scripts
@@ -73,7 +74,7 @@ This suite includes IntraVirt source code, all the test code and the dependent l
 You need to install libraries which are required to build the tools.
 ```
 $ cd script
-$ ./dep.sh
+$ ./dep.sh              # This requires root password
 ```
 ### Kernel
 IntraVirt requires CET enabled kernel which is maintained by IntraVirt research group.
