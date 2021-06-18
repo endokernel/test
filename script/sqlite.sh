@@ -21,7 +21,7 @@ then
 fi
 
 # Build CET version
-if ! [ -f "../bin/nocet/sqlite_speedtest" ]
+if ! [ -f "../bin/cet/sqlite_speedtest" ]
 then
     tar xzvf ../pkg/sqlite.tar.gz
 
