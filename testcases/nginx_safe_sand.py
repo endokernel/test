@@ -8,23 +8,25 @@ import time
 start_time = time.time()
 
 datasizes = ['0k', '1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k']
-#datasizes = ['1k', '4k', '16k', '64k', '256k', '1024k']
 
 
-for i in range(0, len(variable.paths)):
+for i in range(0, len(variable.iv_nocet_paths)):
     # launch nginx
-    if variable.paths[i] == 'baseline':
-        continue
+    if variable.iv_nocet_paths[i] == 'baseline':
+        filesuffix = "safesand_baseline"
+        servercmd = "LD_LIBRARY_PATH=../libs/nocet ../bin/nocet/nginx -c ../conf/nginx.conf -p ../www"
+        curbench = "safe_sand Beseline"
     else:
-        filesuffix = "nginx_https_safe_sand_" + variable.paths[i].split("/")[-2]
-        servercmd = variable.paths[i] + "src/libintravirt/libintravirt.so /home/bi1/src/intravirt/glibc-safebox/glibc-nocet/install/lib ~/src/intravirt/iv-nginx/objs/nginx -c ../conf/nginx_https.conf -p ../www"
-        curbench = "nginx_https_safe_sand " + variable.paths[i].split("/")[-2]
+        filesuffix = "safesand_" + variable.iv_nocet_paths[i].split("/")[-2]
+        servercmd = variable.iv_nocet_paths[i] + "libintravirt.so ../safe-sand/nocet/glibc/install/lib ../safe-sand/nocet/nginx -c ../conf/nginx.conf -p ../www"
+        curbench = "safesand " + variable.iv_nocet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
     for size in datasizes:
         fp.write(size.encode())
         fp.write(b',')
     fp.write(b'\n')
+    print(servercmd)
 
     ps = subprocess.Popen(servercmd, shell=True, stderr=subprocess.PIPE)
     time.sleep(1)
@@ -53,18 +55,18 @@ for i in range(0, len(variable.paths)):
     
 
 ###### CET!!
-for i in range(0, len(variable.cet_path)):
+for i in range(0, len(variable.iv_cet_paths)):
     # launch nginx
-    filesuffix = "nginx_https_safe_sand_" + variable.cet_path[i].split("/")[-2]
-    servercmd = variable.cet_path[i] + "src/libintravirt/libintravirt.so /home/bi1/src/intravirt/glibc-safebox/glibc-cet/install/lib ~/src/intravirt/iv-nginx/objs/nginx -c ../conf/nginx_https.conf -p ../www"
-    curbench = "nginx_https " + variable.cet_path[i].split("/")[-2]
+    filesuffix = "safesand_" + variable.iv_cet_paths[i].split("/")[-2]
+    servercmd = variable.iv_cet_paths[i] + "libintravirt.so ../safe-sand/cet/glibc/install/lib ../safe-sand/cet/nginx -c ../conf/nginx.conf -p ../www"
+    curbench = "safesand " + variable.iv_cet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
     for size in datasizes:
         fp.write(size.encode())
         fp.write(b',')
     fp.write(b'\n')
-
+    print(servercmd)
     ps = subprocess.Popen(servercmd, shell=True, stderr=subprocess.PIPE)
     time.sleep(1)
 
@@ -96,5 +98,6 @@ hour = int(total/3600)
 min = int((total%3600)/60)
 sec = total%60
 printable_time = str(hour) + "H " + str(min) + "M " + str(sec) + "S"
-print("Nginx_https_safe_sand total time: " + printable_time)
-os.system("echo \"Nginx_safe_sand: " + printable_time +"\" >> ../" + variable.resdir + "/time.txt")
+
+print("Nginx total time: " + printable_time)
+os.system("echo \"Nginx: " + printable_time +"\" >> ../" + variable.resdir + "/time.txt")
