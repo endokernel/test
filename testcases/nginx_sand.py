@@ -17,9 +17,9 @@ for i in range(0, len(variable.iv_nocet_paths)):
         servercmd = "LD_LIBRARY_PATH=../libs/nocet ../bin/nocet/nginx -c ../conf/nginx.conf -p ../www"
         curbench = "nginx Beseline"
     else:
-        filesuffix = "nginx_" + variable.iv_nocet_paths[i].split("/")[-2]
+        filesuffix = "nginx_sand_" + variable.iv_nocet_paths[i].split("/")[-2]
         servercmd = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../safe-sand/nocet/nginx -c ../conf/nginx.conf -p ../www"
-        curbench = "nginx " + variable.iv_nocet_paths[i].split("/")[-2]
+        curbench = "nginx_sand " + variable.iv_nocet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
     for size in datasizes:
@@ -56,9 +56,9 @@ for i in range(0, len(variable.iv_nocet_paths)):
 ###### CET!!
 for i in range(0, len(variable.iv_cet_paths)):
     # launch nginx
-    filesuffix = "nginx_" + variable.iv_cet_paths[i].split("/")[-2]
+    filesuffix = "nginx_sand_" + variable.iv_cet_paths[i].split("/")[-2]
     servercmd = variable.iv_cet_paths[i] + "libintravirt.so " + variable.cet_glibcpath + " ../safe-sand/cet/nginx -c ../conf/nginx.conf -p ../www"
-    curbench = "nginx " + variable.iv_cet_paths[i].split("/")[-2]
+    curbench = "nginx_sand " + variable.iv_cet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
     for size in datasizes:
@@ -97,5 +97,5 @@ min = int((total%3600)/60)
 sec = total%60
 printable_time = str(hour) + "H " + str(min) + "M " + str(sec) + "S"
 
-print("Nginx total time: " + printable_time)
+print("Nginx_sand total time: " + printable_time)
 os.system("echo \"Nginx: " + printable_time +"\" >> ../" + variable.resdir + "/time.txt")
