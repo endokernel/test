@@ -1,0 +1,233 @@
+diff -Naur zlib-1.2.11/deflate.c zlib-1.2.11_new/deflate.c
+--- zlib-1.2.11/deflate.c	2017-01-15 11:29:40.000000000 -0600
++++ zlib-1.2.11_new/deflate.c	2021-07-03 15:13:51.218146066 -0500
+@@ -231,12 +231,127 @@
+     const char *version;
+     int stream_size;
+ {
+-    return deflateInit2_(strm, level, Z_DEFLATED, MAX_WBITS, DEF_MEM_LEVEL,
+-                         Z_DEFAULT_STRATEGY, version, stream_size);
++    //return deflateInit2_(strm, level, Z_DEFLATED, MAX_WBITS, DEF_MEM_LEVEL,
++//                         Z_DEFAULT_STRATEGY, version, stream_size);
+     /* To do: ignore strm->next_in if we use it as window */
++    return iv_deflateInit_(strm, level, version, stream_size);
+ }
+ 
+ /* ========================================================================= */
++int ZEXPORT iv_deflateInit_(strm, level,
++                  version, stream_size)
++    z_streamp strm;
++    int  level;
++    const char *version;
++    int stream_size;
++{
++    int  method = Z_DEFLATED;
++    int  windowBits = MAX_WBITS;
++    int  memLevel = DEF_MEM_LEVEL;
++    int  strategy = Z_DEFAULT_STRATEGY;
++
++    deflate_state *s;
++    int wrap = 1;
++    static const char my_version[] = ZLIB_VERSION;
++
++    ushf *overlay;
++    /* We overlay pending_buf and d_buf+l_buf. This works since the average
++     * output size for (length,distance) codes is <= 24 bits.
++     */
++
++    if (version == Z_NULL || version[0] != my_version[0] ||
++        stream_size != sizeof(z_stream)) {
++        return Z_VERSION_ERROR;
++    }
++    if (strm == Z_NULL) return Z_STREAM_ERROR;
++
++    strm->msg = Z_NULL;
++    if (strm->zalloc == (alloc_func)0) {
++#ifdef Z_SOLO
++        return Z_STREAM_ERROR;
++#else
++        strm->zalloc = zcalloc;
++        strm->opaque = (voidpf)0;
++#endif
++    }
++    if (strm->zfree == (free_func)0)
++#ifdef Z_SOLO
++        return Z_STREAM_ERROR;
++#else
++        strm->zfree = zcfree;
++#endif
++
++#ifdef FASTEST
++    if (level != 0) level = 1;
++#else
++    if (level == Z_DEFAULT_COMPRESSION) level = 6;
++#endif
++
++    if (windowBits < 0) { /* suppress zlib wrapper */
++        wrap = 0;
++        windowBits = -windowBits;
++    }
++#ifdef GZIP
++    else if (windowBits > 15) {
++        wrap = 2;       /* write gzip wrapper instead */
++        windowBits -= 16;
++    }
++#endif
++    if (memLevel < 1 || memLevel > MAX_MEM_LEVEL || method != Z_DEFLATED ||
++        windowBits < 8 || windowBits > 15 || level < 0 || level > 9 ||
++        strategy < 0 || strategy > Z_FIXED || (windowBits == 8 && wrap != 1)) {
++        return Z_STREAM_ERROR;
++    }
++    if (windowBits == 8) windowBits = 9;  /* until 256-byte window bug fixed */
++    s = (deflate_state *) ZALLOC(strm, 1, sizeof(deflate_state));
++    if (s == Z_NULL) return Z_MEM_ERROR;
++    strm->state = (struct internal_state FAR *)s;
++    s->strm = strm;
++    s->status = INIT_STATE;     /* to pass state test in deflateReset() */
++
++    s->wrap = wrap;
++    s->gzhead = Z_NULL;
++    s->w_bits = (uInt)windowBits;
++    s->w_size = 1 << s->w_bits;
++    s->w_mask = s->w_size - 1;
++
++    s->hash_bits = (uInt)memLevel + 7;
++    s->hash_size = 1 << s->hash_bits;
++    s->hash_mask = s->hash_size - 1;
++    s->hash_shift =  ((s->hash_bits+MIN_MATCH-1)/MIN_MATCH);
++
++    s->window = (Bytef *) ZALLOC(strm, s->w_size, 2*sizeof(Byte));
++    s->prev   = (Posf *)  ZALLOC(strm, s->w_size, sizeof(Pos));
++    s->head   = (Posf *)  ZALLOC(strm, s->hash_size, sizeof(Pos));
++
++    s->high_water = 0;      /* nothing written to s->window yet */
++
++    s->lit_bufsize = 1 << (memLevel + 6); /* 16K elements by default */
++
++    overlay = (ushf *) ZALLOC(strm, s->lit_bufsize, sizeof(ush)+2);
++    s->pending_buf = (uchf *) overlay;
++    s->pending_buf_size = (ulg)s->lit_bufsize * (sizeof(ush)+2L);
++
++    if (s->window == Z_NULL || s->prev == Z_NULL || s->head == Z_NULL ||
++        s->pending_buf == Z_NULL) {
++        s->status = FINISH_STATE;
++        strm->msg = ERR_MSG(Z_MEM_ERROR);
++        deflateEnd (strm);
++        return Z_MEM_ERROR;
++    }
++    s->d_buf = overlay + s->lit_bufsize/sizeof(ush);
++    s->l_buf = s->pending_buf + (1+sizeof(ush))*s->lit_bufsize;
++
++    s->level = level;
++    s->strategy = strategy;
++    s->method = (Byte)method;
++
++    return deflateReset(strm);
++}
++
++
++
++/* ========================================================================= */
+ int ZEXPORT deflateInit2_(strm, level, method, windowBits, memLevel, strategy,
+                   version, stream_size)
+     z_streamp strm;
+diff -Naur zlib-1.2.11/iv.c zlib-1.2.11_new/iv.c
+--- zlib-1.2.11/iv.c	1969-12-31 18:00:00.000000000 -0600
++++ zlib-1.2.11_new/iv.c	2021-07-03 15:14:56.566769151 -0500
+@@ -0,0 +1,24 @@
++#define _GNU_SOURCE
++#include <dlfcn.h>
++#include <unistd.h>
++#include <sys/mman.h>
++#include <linux/mman.h>
++#include <stdio.h>
++#include <link.h>
++#include <string.h>
++
++
++int domain_id;
++
++void *libaddresses[3] = {0, 0, 0};
++void* domain_id_addr[3] = {0, 0, 0};
++
++void __attribute__((constructor(1024))) __init_memsep(){
++    Dl_info info;
++    char* addr;
++    dladdr1(&domain_id, &info, (void**)(&addr), RTLD_DL_LINKMAP);
++    libaddresses[0] = addr;
++    domain_id_addr[0] = &domain_id;
++    syscall(335, libaddresses, domain_id_addr);
++}
++
+diff -Naur zlib-1.2.11/Makefile.in zlib-1.2.11_new/Makefile.in
+--- zlib-1.2.11/Makefile.in	2017-01-15 11:29:40.000000000 -0600
++++ zlib-1.2.11_new/Makefile.in	2021-07-03 15:13:34.525988574 -0500
+@@ -57,11 +57,11 @@
+ ZINC=
+ ZINCOUT=-I.
+ 
+-OBJZ = adler32.o crc32.o deflate.o infback.o inffast.o inflate.o inftrees.o trees.o zutil.o
++OBJZ = adler32.o crc32.o deflate.o infback.o inffast.o inflate.o inftrees.o trees.o zutil.o iv.o
+ OBJG = compress.o uncompr.o gzclose.o gzlib.o gzread.o gzwrite.o
+ OBJC = $(OBJZ) $(OBJG)
+ 
+-PIC_OBJZ = adler32.lo crc32.lo deflate.lo infback.lo inffast.lo inflate.lo inftrees.lo trees.lo zutil.lo
++PIC_OBJZ = adler32.lo crc32.lo deflate.lo infback.lo inffast.lo inflate.lo inftrees.lo trees.lo zutil.lo iv.lo
+ PIC_OBJG = compress.lo uncompr.lo gzclose.lo gzlib.lo gzread.lo gzwrite.lo
+ PIC_OBJC = $(PIC_OBJZ) $(PIC_OBJG)
+ 
+@@ -201,6 +201,8 @@
+ gzwrite.o: $(SRCDIR)gzwrite.c
+ 	$(CC) $(CFLAGS) $(ZINC) -c -o $@ $(SRCDIR)gzwrite.c
+ 
++iv.o: $(SRCDIR)iv.c
++	$(CC) $(CFLAGS) $(ZINC) -c -o $@ $(SRCDIR)iv.c -ldl
+ 
+ adler32.lo: $(SRCDIR)adler32.c
+ 	-@mkdir objs 2>/dev/null || test -d objs
+@@ -277,6 +279,11 @@
+ 	$(CC) $(SFLAGS) $(ZINC) -DPIC -c -o objs/gzwrite.o $(SRCDIR)gzwrite.c
+ 	-@mv objs/gzwrite.o $@
+ 
++iv.lo: $(SRCDIR)iv.c
++	-@mkdir objs 2>/dev/null || test -d objs
++	$(CC) $(SFLAGS) $(ZINC) -DPIC -c -o objs/iv.o $(SRCDIR)iv.c -ldl
++	-@mv objs/iv.o $@
++
+ 
+ placebo $(SHAREDLIBV): $(PIC_OBJS) libz.a
+ 	$(LDSHARED) $(SFLAGS) -o $@ $(PIC_OBJS) $(LDSHAREDLIBC) $(LDFLAGS)
+@@ -292,16 +299,16 @@
+ 	$(CC) $(CFLAGS) -o $@ minigzip.o $(TEST_LDFLAGS)
+ 
+ examplesh$(EXE): example.o $(SHAREDLIBV)
+-	$(CC) $(CFLAGS) -o $@ example.o -L. $(SHAREDLIBV)
++	$(CC) $(CFLAGS) -o $@ example.o -L. $(SHAREDLIBV) -ldl
+ 
+ minigzipsh$(EXE): minigzip.o $(SHAREDLIBV)
+-	$(CC) $(CFLAGS) -o $@ minigzip.o -L. $(SHAREDLIBV)
++	$(CC) $(CFLAGS) -o $@ minigzip.o -L. $(SHAREDLIBV) -ldl
+ 
+ example64$(EXE): example64.o $(STATICLIB)
+-	$(CC) $(CFLAGS) -o $@ example64.o $(TEST_LDFLAGS)
++	$(CC) $(CFLAGS) -o $@ example64.o $(TEST_LDFLAGS) -ldl
+ 
+ minigzip64$(EXE): minigzip64.o $(STATICLIB)
+-	$(CC) $(CFLAGS) -o $@ minigzip64.o $(TEST_LDFLAGS)
++	$(CC) $(CFLAGS) -o $@ minigzip64.o $(TEST_LDFLAGS) -ldl
+ 
+ install-libs: $(LIBS)
+ 	-@if [ ! -d $(DESTDIR)$(exec_prefix)  ]; then mkdir -p $(DESTDIR)$(exec_prefix); fi
+diff -Naur zlib-1.2.11/zlib.h zlib-1.2.11_new/zlib.h
+--- zlib-1.2.11/zlib.h	2017-01-15 11:29:40.000000000 -0600
++++ zlib-1.2.11_new/zlib.h	2021-07-03 15:14:36.070572653 -0500
+@@ -1765,6 +1765,9 @@
+                                      const char *version, int stream_size));
+ ZEXTERN int ZEXPORT inflateInit_ OF((z_streamp strm,
+                                      const char *version, int stream_size));
++
++ZEXTERN int ZEXPORT iv_deflateInit_ OF((z_streamp strm, int  level, const char *version, int stream_size));
++
+ ZEXTERN int ZEXPORT deflateInit2_ OF((z_streamp strm, int  level, int  method,
+                                       int windowBits, int memLevel,
+                                       int strategy, const char *version,
