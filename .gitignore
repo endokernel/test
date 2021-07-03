@@ -15,3 +15,4 @@ bin/
 safe-sand/
 linux-5.9.8/
 conf/lighttpd.conf1
+zlib

@@ -12,4 +12,5 @@ mkdir -p ../result
 ./iv-openssl.sh
 ./iv-nginx.sh
 ./curl.sh
+./iv-zlib.sh
 

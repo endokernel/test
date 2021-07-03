@@ -66,6 +66,9 @@ This suite includes IntraVirt source code, all the test code and the dependent l
 +-+- testcases          # Test case scripts
 | +--- inactive         # Obsolete test case scripts
 +--- www                # Web server root directory
++-+- zlib               # Binary for zlib test cases
+  +--- cet              # CET enabled zlib test binaries
+  +--- nocet            # CET disabled zlib test binarties
 
 ```
 
@@ -189,6 +192,13 @@ $ cd testcases
 $ python3 safe_sand.py	    # This will take a while
 ```
 The result CSV file is stored in `result` directory. File names are `safesand_[setupname].csv`
+
+### zlib
+```
+$ cd testcases
+$ python3 zlib.py          # This will take a while
+```
+The result CSV file is stored in `result` directory. File name is `zlib.csv`
 
 ## Cleaning up
 You can simply run a clean up script. It will remove all the produced files and restore back to the original.
