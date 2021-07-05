@@ -23,7 +23,7 @@ cd ../script
 mkdir -p ../src
 mkdir -p ../bin/cet
 cd ../src
-if ! [ -f "../bin/cet/sysbench" ]
+if ! [ -f "../bin/cet/zip" ]
 then
     tar xzvf ../pkg/zip30.tar.gz
     cd zip30
