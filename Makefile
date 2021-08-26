@@ -6,7 +6,7 @@ ifneq (,$(findstring cet,$(ARCH)))
 	DEPS := glibc-nocet/done glibc-cet/done
 	PREBUILT := prebuilt/glibc-nocet.zip prebuilt/glibc-cet.zip
 else
-    CET := 1
+    CET := 0
 	DEPS := glibc-nocet/done
 	PREBUILT := prebuilt/glibc-nocet.zip prebuilt/glibc-cet.zip
 endif
