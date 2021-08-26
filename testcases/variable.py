@@ -2,19 +2,19 @@
 iv_nocet_paths = []
 
 iv_nocet_paths.append("baseline")
-iv_nocet_paths.append("../random1/")
+#iv_nocet_paths.append("../intravirt/random1/")
 #iv_nocet_paths.append("../random2/")
 #iv_nocet_paths.append("../random4/")
 #iv_nocet_paths.append("../random8/")
-iv_nocet_paths.append("../random16/")
+#iv_nocet_paths.append("../intravirt/random16/")
 #iv_nocet_paths.append("../random32/")
 #iv_nocet_paths.append("../random1024/")
-iv_nocet_paths.append("../queen/")
-iv_nocet_paths.append("../dispatch_eiv/")
+#iv_nocet_paths.append("../intravirt/queen/")
+iv_nocet_paths.append("../intravirt/dispatch_eiv/")
 
 iv_cet_paths = []
-iv_cet_paths.append("../seccomp_cet/")
-iv_cet_paths.append("../dispatch_cet/")
+#iv_cet_paths.append("../intravirt/seccomp_cet/")
+#iv_cet_paths.append("../intravirt/dispatch_cet/")
 
 # Benchmarks
 benchs = []

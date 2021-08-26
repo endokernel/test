@@ -1,6 +1,4 @@
 #!/bin/sh
-./glibc.sh
-
 mkdir -p ../src
 mkdir -p ../libs/cet
 mkdir -p ../libs/nocet

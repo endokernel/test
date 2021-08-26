@@ -1,5 +1,4 @@
 #/bin/bash
-./glibc.sh
 
 cd ../src
 git clone git@gitlab.com:fierce-lab/intravirt-src.git

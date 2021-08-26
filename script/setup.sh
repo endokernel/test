@@ -1,9 +1,7 @@
 #/bin/bash
 mkdir -p ../result
-./glibc.sh
-./iv.sh
 ./lmbench_nocet.sh
-./lmbench_cet.sh
+if [ "$CET" == "1" ] ; then ./lmbench_cet.sh; fi
 ./sysbench.sh
 ./lighttpd.sh
 ./nginx.sh

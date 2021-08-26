@@ -1,5 +1,4 @@
 #!/bin/sh
-./glibc.sh
 ./nginx.sh
 
 mkdir -p ../src

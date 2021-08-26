@@ -1,5 +1,4 @@
 #!/bin/sh
-./glibc.sh
 ./lighttpd.sh
 ./nginx.sh
 
