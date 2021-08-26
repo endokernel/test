@@ -47,11 +47,11 @@ build-prog: unpack
 	cd ./script && ./setup.sh
 	touch build-prog
 
-test: image
+test: 
 	docker run --runtime runq --rm --security-opt=seccomp:unconfined \
 		intravirt-env make runtest
 
-shell: image
+shell: 
 	docker run --runtime runq -ti --rm --security-opt=seccomp:unconfined intravirt-env
 
 runtest:
