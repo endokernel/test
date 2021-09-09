@@ -3,7 +3,7 @@
 cd ../src
 git clone git@gitlab.com:fierce-lab/intravirt-src.git
 cd intravirt-src/src/libintravirt
-git checkout exp
+git checkout 1.0
 cat printf.c | sed 's/int quiet = 0;/int quiet = 1;/' > printf.1
 mv printf.1 printf.c
 
