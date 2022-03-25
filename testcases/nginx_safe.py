@@ -7,9 +7,12 @@ import time
 
 start_time = time.time()
 
-datasizes = ['0k', '1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k']
+datasizes = ['0k', '1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k', '2048k', '4096k']
 
+variable.set_name("nginx_safe")
+variable.def_test("nginx_safe", variable.get_row(), datasizes)
 
+n = 0
 for i in range(0, len(variable.iv_nocet_paths)):
     # launch nginx
     if variable.iv_nocet_paths[i] == 'baseline':
@@ -18,7 +21,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
         curbench = "nginx Beseline"
     else:
         filesuffix = "nginx_safe_" + variable.iv_nocet_paths[i].split("/")[-2]
-        servercmd = variable.iv_nocet_paths[i] + "libintravirt.so ../safe-sand/nocet/glibc/install/lib ../bin/nocet/nginx -c ../conf/nginx.conf -p ../www"
+        servercmd ="LD_LIBRARY_PATH=../openssl-install/lib " + variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/nginx -c ../conf/nginx.conf -p ../www"
         curbench = "nginx safe " + variable.iv_nocet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
@@ -42,6 +45,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
                     continue
                 res = lines.split(b":")[1].lstrip().split(b'[')[0].rstrip()
                 print(res)
+                variable.add_result("nginx_safe", n, size, float(res))
                 fp.write(res)
             fp.write(b',')
         fp.write(b'\n')
@@ -51,13 +55,14 @@ for i in range(0, len(variable.iv_nocet_paths)):
     time.sleep(1)
     fp.close()
     os.rename(resfilename + ".tmp", resfilename)
+    n = n + 1
     
 
 ###### CET!!
 for i in range(0, len(variable.iv_cet_paths)):
     # launch nginx
     filesuffix = "nginx_safe_" + variable.iv_cet_paths[i].split("/")[-2]
-    servercmd = variable.iv_cet_paths[i] + "libintravirt.so ../safe-sand/cet/glibc/install/lib ../bin/cet/nginx -c ../conf/nginx.conf -p ../www"
+    servercmd = "LD_LIBRARY_PATH=../openssl-cet-install/lib " + variable.iv_cet_paths[i] + "libintravirt.so " + variable.cet_glibcpath + " ../bin/cet/nginx -c ../conf/nginx.conf -p ../www"
     curbench = "nginx safe " + variable.iv_cet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
@@ -80,6 +85,7 @@ for i in range(0, len(variable.iv_cet_paths)):
                     continue
                 res = lines.split(b":")[1].lstrip().split(b'[')[0].rstrip()
                 print(res)
+                variable.add_result("nginx_safe", n, size, float(res))
                 fp.write(res)
             fp.write(b',')
         fp.write(b'\n')
@@ -89,6 +95,7 @@ for i in range(0, len(variable.iv_cet_paths)):
     time.sleep(1)
     fp.close()
     os.rename(resfilename + ".tmp", resfilename)
+    n = n + 1
 
 
 total = time.time() - start_time
@@ -99,3 +106,4 @@ printable_time = str(hour) + "H " + str(min) + "M " + str(sec) + "S"
 
 print("Nginx safebox total time: " + printable_time)
 os.system("echo \"Nginx safebox: " + printable_time +"\" >> ../" + variable.resdir + "/time.txt")
+variable.save()

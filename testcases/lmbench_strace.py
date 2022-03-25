@@ -18,20 +18,15 @@ tests.update({'mmap':'lat_mmap 512k /tmp/test.bin'})
 tests.update({'signal install':'lat_sig install'})
 tests.update({'signal catch':'lat_sig catch'})
 
-variable.set_name("lmbench")
-variable.def_test("lmbench", variable.get_row(), tests.keys())
-variable.tries = 20
+variable.set_name("lmbench_strace")
+variable.def_test("lmbench", ['strace'], tests.keys())
+variable.tries = 40
 
 n = 0
-for i in range(0, len(variable.iv_nocet_paths)):
-    if variable.iv_nocet_paths[i] == "baseline":
-        filesuffix = "lmbench_baseline"
-        cmdprefix = 'LD_LIBRARY_PATH=../libs/nocet ../bin/nocet/'
-        tname = 'baseline '
-    else:
-        filesuffix = "lmbench_" + variable.iv_nocet_paths[i].split("/")[-2]
-        cmdprefix = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/"
-        tname = variable.iv_nocet_paths[i].split("/")[-2]
+for i in range(0, 1):
+    filesuffix = "lmbench_strace"
+    cmdprefix = 'LD_LIBRARY_PATH=../libs/nocet strace -f -o /dev/null ../bin/nocet/'
+    tname = 'baseline '
 
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
@@ -58,35 +53,6 @@ for i in range(0, len(variable.iv_nocet_paths)):
                 except:
                     okay = False
 
-        fp.write(b'\n')
-    fp.close()
-    os.rename(resfilename + ".tmp", resfilename)
-    n = n + 1
-
-### now CET's turn
-for i in range(0, len(variable.iv_cet_paths)):
-    filesuffix = "lmbench_" + variable.iv_cet_paths[i].split("/")[-2]
-    cmdprefix = variable.iv_cet_paths[i] + "libintravirt.so " + variable.cet_glibcpath + " ../bin/cet/"
-    tname = variable.iv_cet_paths[i].split("/")[-2]
-
-    resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
-    fp = open(resfilename + ".tmp", "wb")
-    fp.write(b'null,open,read,write,mmap,sig inst,sig catch\n')
-
-    for j in range(0, variable.tries):
-        for curtest in tests.keys():
-            cmd = cmdprefix + tests[curtest]
-            print(tname + " " + curtest + ": " + str(j))
-            ps = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
-
-            if curtest.startswith('mmap'):
-                output = ps.stderr.read().split(b' ')[1][:-1]
-            else:
-                output = ps.stderr.read().splitlines()[0].split(b'[')[1][5:11]
-            fp.write(output)
-            fp.write(b',')
-            variable.add_result('lmbench', n, curtest, float(output))
-            print(output)
         fp.write(b'\n')
     fp.close()
     os.rename(resfilename + ".tmp", resfilename)

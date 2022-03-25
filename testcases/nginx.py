@@ -7,9 +7,12 @@ import time
 
 start_time = time.time()
 
-datasizes = ['0k', '1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k']
+datasizes = ['0k', '1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k', '2048k', '4096k']
 
+variable.set_name("nginx")
+variable.def_test("nginx", variable.get_row(), datasizes)
 
+n = 0
 for i in range(0, len(variable.iv_nocet_paths)):
     # launch nginx
     if variable.iv_nocet_paths[i] == 'baseline':
@@ -42,6 +45,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
                     continue
                 res = lines.split(b":")[1].lstrip().split(b'[')[0].rstrip()
                 print(res)
+                variable.add_result("nginx", n, size, float(res))
                 fp.write(res)
             fp.write(b',')
         fp.write(b'\n')
@@ -51,6 +55,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
     time.sleep(1)
     fp.close()
     os.rename(resfilename + ".tmp", resfilename)
+    n = n + 1
     
 
 ###### CET!!
@@ -80,6 +85,7 @@ for i in range(0, len(variable.iv_cet_paths)):
                     continue
                 res = lines.split(b":")[1].lstrip().split(b'[')[0].rstrip()
                 print(res)
+                variable.add_result("nginx", n, size, float(res))
                 fp.write(res)
             fp.write(b',')
         fp.write(b'\n')
@@ -89,7 +95,7 @@ for i in range(0, len(variable.iv_cet_paths)):
     time.sleep(1)
     fp.close()
     os.rename(resfilename + ".tmp", resfilename)
-
+    n = n + 1
 
 total = time.time() - start_time
 hour = int(total/3600)
@@ -99,3 +105,4 @@ printable_time = str(hour) + "H " + str(min) + "M " + str(sec) + "S"
 
 print("Nginx total time: " + printable_time)
 os.system("echo \"Nginx: " + printable_time +"\" >> ../" + variable.resdir + "/time.txt")
+variable.save()

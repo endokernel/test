@@ -11,7 +11,9 @@ os.system("dd if=/dev/urandom of=/tmp/test.bin bs=1024 count=40960")
 
 cmds = ['1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k', '2048k', '4096k']
 
-
+variable.set_name("file_bw")
+variable.def_test("file_bw", variable.get_row(), cmds)
+variable.tries = 20
 for i in range(0, len(variable.iv_nocet_paths)):
     if variable.iv_nocet_paths[i] == "baseline":
         filesuffix = "file_bw_baseline"
@@ -29,16 +31,27 @@ for i in range(0, len(variable.iv_nocet_paths)):
         fp.write(b',')
     fp.write(b'\n')
 
+    rr = [[] for k in range(0, len(cmds))]
     for j in range(0, variable.tries):
-        for curtest in cmds:
-            cmd = cmdprefix + curtest + " 40960k io_only /tmp/test.bin"
-            print(tname + " " + curtest + ": " + str(j))
-            ps = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
-            output = ps.stderr.read().split(b' ')[1][:-1]
-            fp.write(output)
-            fp.write(b',')
-            print(output)
+        for k in range(0, len(cmds)):
+            okay = False
+            while not okay:
+                curtest = cmds[k]
+                cmd = cmdprefix + curtest + " 40960k io_only /tmp/test.bin"
+                print(tname + " " + curtest + ": " + str(j))
+                ps = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
+                try:
+                    output = ps.stderr.read().split(b' ')[1][:-1]
+                    print(output)
+                    rr[k].append(float(output))
+                    fp.write(output)
+                    fp.write(b',')
+                    okay = True
+                except:
+                    okay = False
         fp.write(b'\n')
+    variable.add_test("file_bw", rr)
+        
     fp.close()
     os.rename(resfilename + ".tmp", resfilename)
 
@@ -55,8 +68,11 @@ for i in range(0, len(variable.iv_cet_paths)):
         fp.write(b',')
     fp.write(b'\n')
 
+
+    rr = [[] for k in range(0, len(cmds))]
     for j in range(0, variable.tries):
-        for curtest in cmds:
+        for k in range(0, len(cmds)):
+            curtest = cmds[k]
             cmd = cmdprefix + curtest + " 40960k io_only /tmp/test.bin"
             print(tname + " " + curtest + ": " + str(j))
             ps = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
@@ -64,7 +80,9 @@ for i in range(0, len(variable.iv_cet_paths)):
             fp.write(output)
             fp.write(b',')
             print(output)
+            rr[k].append(float(output))
         fp.write(b'\n')
+    variable.add_test("file_bw", rr)
     fp.close()
     os.rename(resfilename + ".tmp", resfilename)
 
@@ -76,3 +94,4 @@ printable_time = str(hour) + "H " + str(min) + "M " + str(sec) + "S"
 
 print("File_BW total time: " + printable_time)
 os.system("echo \"File_BW: " + printable_time +"\" >> ../" + variable.resdir + "/time.txt")
+variable.save()

@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 ./libxcrypt.sh
 ./pcre3.sh
 ./openssl.sh
 ./zlib.sh
-
+source ./export.sh 
 # Build non-cet first
 if ! [ -f "../safe-sand/nocet/nginx" ]
 then
@@ -12,9 +12,11 @@ then
     cd ../src
     git clone git@gitlab.com:fierce-lab/iv-nginx.git
     cd iv-nginx
-    ./configure --with-http_ssl_module --with-cc-opt="-fno-stack-protector -fno-jump-tables"
-    cat objs/Makefile | sed 's?-Werror??' > objs/Makefile1
-    mv objs/Makefile1 objs/Makefile
+    git checkout rc2
+    export GLIBC=$GLIBCNOCET
+    export ltemporal=$GLIBC/lib/ 
+    export ivsrc=$ABSOLUTE_PATH/../src/intravirt-src/
+    ./configure --with-http_ssl_module
     make -j
     cp objs/nginx ../../safe-sand/nocet
     cd ..
@@ -25,13 +27,15 @@ fi
 if ! [ -f "../safe-sand/cet/nginx" ]
 then
     mkdir -p ../src
-    mkdir -p ../safe-sand/nocet
+    mkdir -p ../safe-sand/cet
     cd ../src
     git clone git@gitlab.com:fierce-lab/iv-nginx.git
     cd iv-nginx
+    git checkout rc2
+    export GLIBC=$GLIBCCET
+    export ltemporal=$GLIBC/lib/ 
+    export ivsrc=$ABSOLUTE_PATH/../src/intravirt-src/
     ./configure --with-http_ssl_module --with-cc-opt="-fno-stack-protector -fno-jump-tables -fcf-protection -mshstk" --with-ld-opt="-Wl,-z,shstk -Wl,-z,ibt"
-    cat objs/Makefile | sed 's?-Werror??' > objs/Makefile1
-    mv objs/Makefile1 objs/Makefile
     make -j
     cp objs/nginx ../../safe-sand/cet
     cd ..

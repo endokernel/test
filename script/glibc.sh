@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if ! [ -d "../src/intravirt-glibc" ]
 then

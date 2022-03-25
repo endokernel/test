@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 mkdir -p ../result
 ./lmbench_nocet.sh
 if [ "$CET" == "1" ] ; then ./lmbench_cet.sh; fi

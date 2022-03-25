@@ -1,11 +1,24 @@
-#/bin/bash
+#!/bin/bash
+./glibc.sh
+source ./export.sh
 
 cd ../src
-git clone git@gitlab.com:fierce-lab/intravirt-src.git
+#rm -rf intravirt-src
+#git clone git@gitlab.com:fierce-lab/intravirt-src.git
 cd intravirt-src/src/libintravirt
-git checkout 1.0
-cat printf.c | sed 's/int quiet = 0;/int quiet = 1;/' > printf.1
-mv printf.1 printf.c
+#git checkout rc7
+#cat printf.c | sed 's/int quiet = 0;/int quiet = 1;/' > printf.1
+#mv printf.1 printf.c
+
+# build libtemporal
+pushd ../libtemporal
+mkdir -p build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ ..
+make -j
+DESTDIR=$GLIBCCET make install -j
+DESTDIR=$GLIBCNOCET make install -j
+popd
 
 cd ../../../../
 mkdir -p random1
