@@ -1,14 +1,22 @@
-# IntraVirt Full Test Suite
-This suite includes IntraVirt source code, all the test code and the dependent libraries.
-## Requirement
-### Hardware
+# Endokernel Test Suite
+
+## Runq
+To simplify running benchmarks, we provide a modified version of runq and a Docker image. You can download runq from [here](https://github.com/endokernel/runq/releases/tag/v1) and follow the instructions to configure it with local docker.
+
+We recommend that you compile the Docker image yourself. Simply use `make image`, which will generate a Docker image tagged as `intravirt-env`. Alternatively, you can use the version we created [link](https://drive.google.com/file/d/12Uxq20P6_NIBqOFt6xYltSr3ZEbntrlR/view?usp=sharing).
+
+Please note that the benchmark results when running in runq differ from those on a physical machine because it is based on QEMU. Not all test items can run properly in QEMU.
+
+## Baremetal Run
+### Requirement
+#### Hardware
 - CPU: Intel TigerLake architecture with CET(TM)  and MPK(TM) enabled
 - RAM: 8GB and more
 - Storage: At least 50Gbytes free space
 - Internet access
-### Software
+#### Software
 - Operating System: Ubuntu 20.10 X86_64
-- IntraVirt gitlab access
+- If your device supports CET, the glibc used by the latest version of Ubuntu 20.10 might conflict with our modified kernel. You may need to install our modified glibc on your system.
 
 ## Directory structure
 ### Before build
