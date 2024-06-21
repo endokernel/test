@@ -20,6 +20,7 @@ then
     rm -rf bzip2-1.0.8
 fi
 
+: '
 if ! [ -f "../glibc-cet/install/lib/libbz2.so.1.0" ] 
 then
     cd ../src
@@ -35,3 +36,4 @@ then
     rm -rf bzip2-1.0.8
 fi
 
+'

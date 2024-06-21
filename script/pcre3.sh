@@ -21,6 +21,7 @@ then
     rm -rf pcre3-8.39
 fi
 
+: '
 if ! [ -f "../glibc-cet/install/lib/libpcre.so.3" ]
 then
     # Build for CET version
@@ -35,3 +36,4 @@ then
     cd ..
     rm -rf pcre3-8.39
 fi
+'

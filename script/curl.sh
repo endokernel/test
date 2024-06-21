@@ -23,7 +23,7 @@ then
     cd ..
     rm -rf curl-7.75.0
 fi
-
+: '
 # Build cet
 if ! [ -f "../bin/cet/curl" ]
 then
@@ -37,3 +37,4 @@ then
     cd ..
     rm -rf curl-7.75.0
 fi
+'

@@ -16,7 +16,7 @@ if ! [ -f "../bin/nocet/zip" ]
     cd ..
     rm -rf zip30
 fi
-
+: '
 # Build CET version
 cd ../script
 ./libbz2.sh
@@ -32,7 +32,7 @@ then
     cd ..
     rm -rf zip30
 fi
-
+'
 # Prepare test zip file
 cd ..
 if ! [ -d "linux-5.9.8" ]

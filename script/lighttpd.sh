@@ -23,7 +23,7 @@ then
     cd ..
     rm -rf lighttpd-1.4.59
 fi
-
+: '
 # Build for CET version
 if ! [ -f "../bin/cet/lighttpd" ] 
 then
@@ -37,7 +37,7 @@ then
     cd ..
     rm -rf lighttpd-1.4.59
 fi
-
+'
 # Create config file
 if ! [ -f "../conf/lighttpd.conf" ] 
 then

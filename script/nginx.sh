@@ -20,7 +20,7 @@ then
     cd ..
     rm -rf nginx-1.18.0
 fi
-
+: '
 # Build for CET version
 if ! [ -f "../bin/cet/nginx" ]
 then
@@ -32,7 +32,7 @@ then
     cd ..
     rm -rf nginx-1.18.0
 fi
-
+'
 # Create config file
 if ! [ -f "../conf/nginx.conf" ]
 then

@@ -20,6 +20,7 @@ then
     rm -rf sqlite
 fi
 
+: '
 # Build CET version
 if ! [ -f "../bin/cet/sqlite_speedtest" ]
 then
@@ -32,3 +33,4 @@ then
     cd ..
     rm -rf sqlite
 fi
+'

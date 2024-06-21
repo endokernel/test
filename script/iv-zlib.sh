@@ -24,7 +24,7 @@ then
 fi
 
 
-
+: '
 # CET version
 if ! [ -d "../zlib/cet" ]
 then
@@ -39,7 +39,7 @@ then
     cd ..
     rm -rf zlib-1.2.11
 fi
-
+'
 if ! [ -f "../bin/cet/zlib_test" ]
 then
     gcc -o ../bin/cet/zlib_test ../pkg/zlib-test.c -fcf-protection -mshstk -ldl -lz

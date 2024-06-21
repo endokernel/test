@@ -34,7 +34,7 @@ then
     rm -rf sysbench-1.0.20
 fi
 
-
+: '
 # Build CET version
 if ! [ -f "../glibc-cet/install/lib/libaio.so.1" ]
 then
@@ -49,6 +49,7 @@ fi
 
 # Default libgcc_s.so.1 is already CET enabled, which is good for us.
 cp /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 ../glibc-cet/install/lib
+'
 
 if ! [ -f "../bin/cet/sysbench" ]
 then

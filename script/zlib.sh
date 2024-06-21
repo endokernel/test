@@ -21,6 +21,7 @@ then
     rm -rf zlib-1.2.11
 fi
 
+: '
 if ! [ -f "../glibc-cet/install/lib/libz.so.1" ] 
 then
     # Build CET version
@@ -34,3 +35,4 @@ then
     cd ..
     rm -rf zlib-1.2.11
 fi
+'

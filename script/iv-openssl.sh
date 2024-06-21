@@ -21,7 +21,7 @@ then
 
 
 fi
-
+: '
 # CET version
 if ! [ -f "../openssl-cet-install/cet/libssl.so" ]
 then
@@ -37,3 +37,4 @@ then
     # cd ..
     rm -rf openssl-build iv-openssl
 fi
+'

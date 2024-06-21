@@ -20,7 +20,7 @@ then
     cd ..
     rm -rf libxcrypt-4.4.16
 fi
-
+: '
 # Build for CET version
 if ! [ -f "../libs/cet/libcrypt.so.1" ]
 then
@@ -36,3 +36,4 @@ then
     cd ..
     rm -rf libxcrypt-4.4.16
 fi
+'

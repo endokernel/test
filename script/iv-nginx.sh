@@ -22,7 +22,7 @@ then
     cd ..
     rm -rf iv-nginx
 fi
-
+: '
 # Build non-cet first
 if ! [ -f "../safe-sand/cet/nginx" ]
 then
@@ -41,7 +41,7 @@ then
     cd ..
     rm -rf iv-nginx
 fi
-
+'
 # Create config file
 if ! [ -f "../conf/nginx.conf" ]
 then
