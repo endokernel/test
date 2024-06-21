@@ -1,5 +1,6 @@
 src/
-glibc-*
+glibc-cet
+glibc-nocet
 result/
 *.deb
 www
