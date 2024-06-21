@@ -20,14 +20,13 @@ info:
 glibc-nocet/done: prebuilt/glibc-nocet.zip
 	unzip $< -d .
 	mv glibc-nocet glibc-nocet-t
-	mkdir glibc-nocet
-	mv glibc-nocet-t glibc-nocet/install
+	mv glibc-nocet-t/install/intravirt/glibc-nocet glibc-nocet
 
 glibc-cet/done: prebuilt/glibc-cet.zip
 	unzip $< -d .
 	mv glibc-cet glibc-cet-t
 	mkdir glibc-cet
-	mv glibc-cet-t glibc-cet/install
+	mv glibc-cet-t/install/intravirt/glibc-cet glibc-cet
 
 
 intravirt/done: prebuilt/intravirt.zip
