@@ -18,9 +18,9 @@ RUN ls -a
 
 COPY ./pkg /intravirt/pkg
 COPY ./script /intravirt/script
-COPY ./testcases /intravirt/testcases
 COPY ./Makefile /intravirt/Makefile
 COPY ./prebuilt /intravirt/prebuilt
 RUN make build-prog
 COPY ./conf /intravirt/conf
+COPY ./testcases /intravirt/testcases
 RUN sudo apt install -y python curl apache2-utils psmisc
