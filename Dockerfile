@@ -8,6 +8,10 @@ ENV PKU ${PKU}
 
 WORKDIR /intravirt
 
+RUN sed -i 's|archive.ubuntu.com|old-releases.ubuntu.com|g' /etc/apt/sources.list \
+    && sed -i 's|security.ubuntu.com|old-releases.ubuntu.com|g' /etc/apt/sources.list \
+    && apt-get update
+
 RUN apt-get update -qq && apt-get install -y -qq nano gdb strace unzip pkg-config build-essential git cmake libncurses-dev gawk flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf libdwarf-dev libdw-dev libaio-dev libpcre3-dev libtool uuid-dev libblkid-dev apache2-utils automake autoconf libtool-bin wget dwarves
 
 RUN ls -a
