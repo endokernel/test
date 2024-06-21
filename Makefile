@@ -18,13 +18,17 @@ info:
 	@echo "PKU=${PKU}"
 
 glibc-nocet/done: prebuilt/glibc-nocet.zip
-	unzip $< "glibc-nocet/*" -d .
-	touch $@
-	ls /intravirt
+	unzip $< -d .
+	mv glibc-nocet glibc-nocet-t
+	mkdir glibc-nocet
+	mv glibc-nocet-t glibc-nocet/install
+
 glibc-cet/done: prebuilt/glibc-cet.zip
-	unzip $< "glibc-cet/*" -d .
-	touch $@
-	ls /intravirt
+	unzip $< -d .
+	mv glibc-cet glibc-cet-t
+	mkdir glibc-cet
+	mv glibc-cet-t glibc-cet/install
+
 
 intravirt/done: prebuilt/intravirt.zip
 	unzip $< -d .
