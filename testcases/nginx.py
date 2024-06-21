@@ -7,7 +7,7 @@ import time
 
 start_time = time.time()
 
-datasizes = ['0k', '1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k', '2048k', '4096k']
+datasizes = ['0k', '1k', '2k', '4k'] #, '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k', '2048k', '4096k']
 
 variable.set_name("nginx")
 variable.def_test("nginx", variable.get_row(), datasizes)
@@ -21,7 +21,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
         curbench = "nginx Beseline"
     else:
         filesuffix = "nginx_" + variable.iv_nocet_paths[i].split("/")[-2]
-        servercmd = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/nginx -c ../conf/nginx.conf -p ../www"
+        servercmd = "LD_LIBRARY_PATH=../libs/nocet " + variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/nginx -c ../conf/nginx.conf -p ../www"
         curbench = "nginx " + variable.iv_nocet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
@@ -41,6 +41,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
             ps = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
             output = ps.stdout.read().splitlines()
             for lines in output:
+                print(lines)
                 if not lines.startswith(b'Transfer rate:'):
                     continue
                 res = lines.split(b":")[1].lstrip().split(b'[')[0].rstrip()
@@ -83,6 +84,7 @@ for i in range(0, len(variable.iv_cet_paths)):
             for lines in output:
                 if not lines.startswith(b'Transfer rate:'):
                     continue
+                print(lines)
                 res = lines.split(b":")[1].lstrip().split(b'[')[0].rstrip()
                 print(res)
                 variable.add_result("nginx", n, size, float(res))

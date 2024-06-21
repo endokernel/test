@@ -17,7 +17,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
         ctest = "baseline"
     else:
         filesuffix = "sqlite_" + variable.iv_nocet_paths[i].split("/")[-2]
-        cmd = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/sqlite_speedtest"
+        cmd = 'LD_LIBRARY_PATH=../libs/nocet ' + variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/sqlite_speedtest"
         ctest = variable.iv_nocet_paths[i].split("/")[-2]
     resfilename ="../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")

@@ -26,7 +26,7 @@ for i in range(0, variable.tries):
         if variable.iv_nocet_paths[j] == 'baseline':
             continue
         else:
-            cmd = "time " + variable.iv_nocet_paths[j] + "libintravirt.so ../zlib/nocet/glibc/install/lib " + zlibcmd
+            cmd = "time " + 'LD_LIBRARY_PATH=../libs/nocet ' + variable.iv_nocet_paths[j] + "libintravirt.so ../zlib/nocet/glibc/install/lib " + zlibcmd
             print(variable.iv_nocet_paths[j].split("/")[-2] + " " + str(i) + " ...")
         ps = subprocess.Popen(cmd, shell=True, executable='/bin/bash', stderr=subprocess.PIPE)
         output = ps.stderr.read().splitlines()

@@ -7,7 +7,7 @@ import time
 
 start_time = time.time()
 
-datasizes = ['0k', '1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k', '2048k', '4096k']
+datasizes = ['0k', '1k', '2k', '4k'] #, '8k', '16k', '32k', '64k', '128k', '256k', '512k', '1024k', '2048k', '4096k']
 
 variable.set_name("nginx_safe")
 variable.def_test("nginx_safe", variable.get_row(), datasizes)
