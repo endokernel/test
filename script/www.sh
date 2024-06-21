@@ -18,6 +18,6 @@ then
     dd if=/dev/urandom of=1024k.bin bs=1024 count=1024
     dd if=/dev/urandom of=2048k.bin bs=1024 count=2048
     dd if=/dev/urandom of=4096k.bin bs=1024 count=4096
-    dd if=/dev/urandom of=1g.bin bs=1024 count=1048576
+    #dd if=/dev/urandom of=1g.bin bs=1024 count=1048576
     echo "<html><body>It works!<p></body></html>" > index.html
 fi
