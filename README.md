@@ -17,6 +17,7 @@ Please note that the benchmark results when running in runq differ from those on
 #### Software
 - Operating System: Ubuntu 20.10 X86_64
 - If your device supports CET, the glibc used by the latest version of Ubuntu 20.10 might conflict with our modified kernel. You may need to install our modified glibc on your system.
+- The link is here: https://github.com/endokernel/glibc/releases/tag/cetonly
 
 ## Directory structure
 ### Before build
