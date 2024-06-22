@@ -1,6 +1,6 @@
 ARCH := $(uname -r)
 FLAGS := $(cat /proc/cpuinfo)
-USE_PREBUILT := 0
+USE_PREBUILT := 1
 
 ifneq (,$(findstring cet,$(ARCH)))
     CET := 1
@@ -32,20 +32,20 @@ info:
 
 glibc-nocet/done: prebuilt/glibc-nocet.zip
 	unzip $< -d .
-	mv glibc-nocet glibc-nocet-t
-	mv glibc-nocet-t/install/intravirt/glibc-nocet glibc-nocet
 
 glibc-cet/done: prebuilt/glibc-cet.zip
 	unzip $< -d .
-	mv glibc-cet glibc-cet-t
-	mkdir glibc-cet
-	mv glibc-cet-t/install/intravirt/glibc-cet glibc-cet
 
 
 intravirt/done: prebuilt/intravirt.zip
 	unzip $< -d .
 	mv ./build ./intravirt
 	touch $@
+
+pack:
+	docker run --rm --security-opt=seccomp:unconfined \
+		-v $(shell pwd):/intravirt-env \
+		intravirt-env /intravirt-env/script/pack.sh
 
 unpack: $(DEPS) intravirt/done
 
