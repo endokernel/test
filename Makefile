@@ -39,6 +39,7 @@ glibc-cet/done: prebuilt/glibc-cet.zip
 
 intravirt/done: prebuilt/intravirt.zip
 	unzip $< -d .
+	mkdir -p intravirt
 	touch $@
 
 pack:
