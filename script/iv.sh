@@ -19,7 +19,9 @@ DESTDIR=$GLIBCCET make install -j
 DESTDIR=$GLIBCNOCET make install -j
 popd
 
-cd ..
+
+cd ../../../../
+
 mkdir -p dispatch_eiv
 cd dispatch_eiv
 cmake ../src/endokernel-paper-ver/src/libintravirt -DCFI=NEXPOLINE -DRSYSCALL=DISPATCH -DVDSO=ON -DMT=ON -DRANDOM=OFF -DAPPPERF=OFF -DSYSCALLFILTER=ON 

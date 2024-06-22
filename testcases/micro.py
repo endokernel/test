@@ -19,7 +19,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
         continue
     else:
         filesuffix = "micro_" + variable.iv_nocet_paths[i].split("/")[-2]
-        cmd = 'LD_LIBRARY_PATH=../libs/nocet ' + variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../src/intravirt-src/src/libtemporal/build/temporal_test 7"
+        cmd = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../src/intravirt-src/src/libtemporal/build/temporal_test 7"
         curbench = "micro " + variable.iv_nocet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")

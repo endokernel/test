@@ -21,7 +21,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
         curbench = "lighttpd Beseline"
     else:
         filesuffix = "lighttpd_" + variable.iv_nocet_paths[i].split("/")[-2]
-        servercmd = 'LD_LIBRARY_PATH=../libs/nocet ' + variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/lighttpd -f ../conf/lighttpd.conf -m ../bin/nocet/lighttpd_module -D"
+        servercmd = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/lighttpd -f ../conf/lighttpd.conf -m ../bin/nocet/lighttpd_module -D"
         curbench = "lighttpd " + variable.iv_nocet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")

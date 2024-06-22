@@ -33,7 +33,7 @@ for i in range(0, variable.tries):
             cmd = "time LD_LIBRARY_PATH=../libs/nocet ../bin/nocet/zip /tmp/test.zip -r ../linux-5.9.8 1> /dev/null"
             print ("Zip: baseline " + str(i) + " ...")
         else:
-            cmd = "time " + 'LD_LIBRARY_PATH=../libs/nocet ' + variable.iv_nocet_paths[j] + "libintravirt.so " + variable.glibcpath + ' ../bin/nocet/zip /tmp/test.zip -r ../linux-5.9.8 1> /dev/null'
+            cmd = "time " +  variable.iv_nocet_paths[j] + "libintravirt.so " + variable.glibcpath + ' ../bin/nocet/zip /tmp/test.zip -r ../linux-5.9.8 1> /dev/null'
             print("Zip: " + variable.iv_nocet_paths[j].split("/")[-2] + " " + str(i) + " ...")
         
         ps = subprocess.Popen(cmd, shell=True, executable='/bin/bash', stderr=subprocess.PIPE)

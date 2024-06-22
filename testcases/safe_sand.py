@@ -22,7 +22,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
         curbench = "safe_sand Beseline"
     else:
         filesuffix = "safesand_" + variable.iv_nocet_paths[i].split("/")[-2]
-        servercmd = "LD_LIBRARY_PATH=../openssl-install/lib " + variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../safe-sand/nocet/nginx -c ../conf/nginx.conf -p ../www"
+        servercmd = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../safe-sand/nocet/nginx -c ../conf/nginx.conf -p ../www"
         curbench = "safesand " + variable.iv_nocet_paths[i].split("/")[-2]
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")

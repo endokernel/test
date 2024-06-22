@@ -26,7 +26,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
         tname = 'baseline '
     else:
         filesuffix = "sysbench_" + variable.iv_nocet_paths[i].split("/")[-2]
-        cmdprefix = 'LD_LIBRARY_PATH=../libs/nocet ' + variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/sysbench "
+        cmdprefix = variable.iv_nocet_paths[i] + "libintravirt.so " + variable.glibcpath + " ../bin/nocet/sysbench "
         tname = variable.iv_nocet_paths[i].split("/")[-2]
 
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"

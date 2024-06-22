@@ -40,7 +40,7 @@ for i in range(0, variable.tries):
             cmd = "time LD_LIBRARY_PATH=../libs/nocet/ " + curlcmd
             print ("Beseline " + str(i) + " ...")
         else:
-            cmd = "time " + "LD_LIBRARY_PATH=../libs/nocet " + variable.iv_nocet_paths[j] + "libintravirt.so " + variable.glibcpath + ' ' + curlcmd
+            cmd = "time " + variable.iv_nocet_paths[j] + "libintravirt.so " + variable.glibcpath + ' ' + curlcmd
             print(variable.iv_nocet_paths[j].split("/")[-2] + " " + str(i) + " ...")
         print(cmd)
         ps = subprocess.Popen(cmd, shell=True, executable='/bin/bash', stderr=subprocess.PIPE)
