@@ -1,18 +1,18 @@
 ARCH := $(uname -r)
 FLAGS := $(cat /proc/cpuinfo)
-USE_PREBUILT := 1
+USE_PREBUILT := 0
 
 ifneq (,$(findstring cet,$(ARCH)))
     CET := 1
-	DEPS := glibc-nocet/done glibc-cet/done
+	DEPS := glibc-nocet/done glibc-cet/done libs/done bin/done
 	ifeq ($(USE_PREBUILT),1)
-		PREBUILT := prebuilt/glibc-nocet.zip prebuilt/glibc-cet.zip
+		PREBUILT := prebuilt/glibc-nocet.zip prebuilt/glibc-cet.zip prebuilt/libs.zip prebuilt/bin.zip
 	endif
 else
     CET := 0
-	DEPS := glibc-nocet/done
+	DEPS := glibc-nocet/done libs/done bin/done
 	ifeq ($(USE_PREBUILT),1)
-		PREBUILT := prebuilt/glibc-nocet.zip prebuilt/glibc-cet.zip
+		PREBUILT := prebuilt/glibc-nocet.zip prebuilt/glibc-cet.zip prebuilt/libs.zip prebuilt/bin.zip
 	endif
 endif
 
@@ -32,10 +32,19 @@ info:
 
 glibc-nocet/done: prebuilt/glibc-nocet.zip
 	unzip $< -d .
+	touch $@
 
 glibc-cet/done: prebuilt/glibc-cet.zip
 	unzip $< -d .
+	touch $@
 
+libs/done: prebuilt/libs.zip
+	unzip $< -d .
+	touch $@
+
+bin/done: prebuilt/bin.zip
+	unzip $< -d .
+	touch $@
 
 intravirt/done: prebuilt/intravirt.zip
 	unzip $< -d .
