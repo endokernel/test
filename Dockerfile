@@ -24,3 +24,5 @@ RUN make build-prog
 COPY ./conf /intravirt/conf
 COPY ./testcases /intravirt/testcases
 RUN sudo apt install -y python curl apache2-utils psmisc
+RUN mkdir -p /intravirt/glibc-nocet/build/
+RUN mkdir -p /intravirt/glibc-cet/build/
