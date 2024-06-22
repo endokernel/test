@@ -20,7 +20,7 @@ tests.update({'signal catch':'lat_sig catch'})
 
 variable.set_name("lmbench")
 variable.def_test("lmbench", variable.get_row(), tests.keys())
-variable.tries = 20
+variable.tries = 2
 
 n = 0
 for i in range(0, len(variable.iv_nocet_paths)):

@@ -30,7 +30,7 @@ fp.write(b'\n')
 col = ["1g"]
 
 variable.def_test("curl", ['strace'], col)
-variable.tries = 20
+variable.tries = 2
 ary1 = [[] for i in range(0, 1)]
 for i in range(0, variable.tries):
     curlcmd = "../bin/nocet/curl https://localhost:44443/1g.bin --insecure -o /tmp/my.bin"

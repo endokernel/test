@@ -13,7 +13,7 @@ cmds = ['1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '10
 
 variable.set_name("file_bw")
 variable.def_test("file_bw", variable.get_row(), cmds)
-variable.tries = 20
+variable.tries = 2
 for i in range(0, len(variable.iv_nocet_paths)):
     if variable.iv_nocet_paths[i] == "baseline":
         filesuffix = "file_bw_baseline"

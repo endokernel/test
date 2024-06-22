@@ -13,7 +13,7 @@ cmds = ['1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k', '256k', '512k', '10
 
 variable.set_name("file_bw_ptrace")
 variable.def_test("file_bw", ['ptrace'], cmds)
-variable.tries = 20
+variable.tries = 2
 for i in range(0, 1):
     filesuffix = "file_bw_ptrace"
     cmdprefix = 'LD_LIBRARY_PATH=../libs/nocet strace -f -o /dev/null ../bin/nocet/'

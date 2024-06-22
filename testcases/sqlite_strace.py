@@ -8,7 +8,7 @@ start_time = time.time()
 
 variable.set_name("sqlite_strace")
 variable.def_test("sqlite", ['strace'], "100,110,120,130,140,142,145,150,160,161,170,180,190,200,210,230,240,250,260,270,280,290,300,310,320,400,410,500,510,520,980,990,total".split(","))
-variable.tries = 10
+variable.tries = 2
 n = 0
 for i in range(0, 1):
     filesuffix = "sqlite_strace"

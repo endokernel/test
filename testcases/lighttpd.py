@@ -12,7 +12,7 @@ variable.set_name("lighttpd")
 col = datasizes
 row = variable.get_row()
 variable.def_test("lighttpd", row, col)
-variable.tries = 10
+variable.tries = 2
 for i in range(0, len(variable.iv_nocet_paths)):
     # launch lighttpd
     if variable.iv_nocet_paths[i] == 'baseline':

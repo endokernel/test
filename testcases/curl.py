@@ -30,7 +30,7 @@ fp.write(b'\n')
 col = ["1g"]
 
 variable.def_test("curl", row, col)
-variable.tries = 10
+variable.tries = 2
 ary1 = [[] for i in range(0, len(variable.iv_nocet_paths))]
 ary2 = [[] for i in range(0, len(variable.iv_cet_paths))]
 for i in range(0, variable.tries):

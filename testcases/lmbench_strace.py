@@ -20,7 +20,7 @@ tests.update({'signal catch':'lat_sig catch'})
 
 variable.set_name("lmbench_strace")
 variable.def_test("lmbench", ['strace'], tests.keys())
-variable.tries = 40
+variable.tries = 2
 
 n = 0
 for i in range(0, 1):

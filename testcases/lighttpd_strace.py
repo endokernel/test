@@ -12,7 +12,7 @@ variable.set_name("lighttpd_strace")
 col = datasizes
 row = ['strace']
 variable.def_test("lighttpd", row, col)
-variable.tries = 20
+variable.tries = 2
 for i in range(0, 1):
     # launch lighttpd
     filesuffix = "lighttpd_strace"

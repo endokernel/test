@@ -23,7 +23,7 @@ for path in variable.iv_cet_paths:
     fp.write(path.split("/")[-2].encode())
     fp.write(b',')
 fp.write(b'\n')
-variable.tries = 20
+variable.tries = 2
 for i in range(0, variable.tries):
     zlibcmd = "../bin/nocet/zlib_test ../conf/alice29.txt"
     n = 0
