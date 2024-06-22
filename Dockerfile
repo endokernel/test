@@ -26,3 +26,5 @@ COPY ./testcases /intravirt/testcases
 RUN sudo apt install -y python curl apache2-utils psmisc
 RUN mkdir -p /intravirt/glibc-nocet/build/
 RUN mkdir -p /intravirt/glibc-cet/build/
+RUN TZ=US/Pacific DEBIAN_FRONTEND=noninteractive apt install -y tcl
+RUN cd /intravirt/script && ./sqlite.sh
