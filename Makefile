@@ -1,6 +1,6 @@
 ARCH := $(uname -r)
 FLAGS := $(cat /proc/cpuinfo)
-USE_PREBUILT := 0
+USE_PREBUILT := 1
 
 ifneq (,$(findstring cet,$(ARCH)))
     CET := 1
