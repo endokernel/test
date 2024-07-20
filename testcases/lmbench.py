@@ -35,7 +35,7 @@ for i in range(0, len(variable.iv_nocet_paths)):
 
     resfilename = "../" + variable.resdir + "/" + filesuffix + ".csv"
     fp = open(resfilename + ".tmp", "wb")
-    fp.write(b'null,open,read,write,mmap,sig inst,sig catch\n')
+    fp.write(','.join(tests.keys()) + "\n")
 
     for j in range(0, variable.tries):
         for curtest in tests.keys():
