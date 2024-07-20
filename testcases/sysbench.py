@@ -5,7 +5,7 @@ import time
 
 start_time = time.time()
 
-threadsizes = ['1', '2', '4', '8', '16']
+threadsizes = ['1', '2', '4', '8', '16', '32']
 
 # Prepare test file
 tests = dict()
