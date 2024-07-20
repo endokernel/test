@@ -1,12 +1,27 @@
 # Endokernel Test Suite
 
-## Runq
-To simplify running benchmarks, we provide a modified version of runq and a Docker image. You can download runq from [here](https://github.com/endokernel/runq/releases/tag/v1) and follow the instructions to configure it with local docker.
+## Git LFS
+You need Git LFS to pull this repository, you can refer to https://git-lfs.com/
 
+## Build Docker Image
+Run `make image` to build the docker image. It will use the prebuild binaries.
+
+## Prebuild Docker Image
 We recommend that you compile the Docker image yourself. Simply use `make image`, which will generate a Docker image tagged as `intravirt-env`. Alternatively, you can use the version we created [link](https://drive.google.com/file/d/12Uxq20P6_NIBqOFt6xYltSr3ZEbntrlR/view?usp=sharing).
-Please note that this docker image does not compile all the dependencies, some projects may need to compile their own, we recommend that you use the normal docker runtime to do so, and test it in runq later on.
+However, this is based on an old version and some scripts has been changed based on the feedback we received from AE.
 
-Please note that the benchmark results when running in runq differ from those on a physical machine because it is based on QEMU. Not all test items can run properly in QEMU.
+## Docker Run
+Use the following command to run a docker container that has all tests built.
+
+```
+docker run --rm --security-opt=seccomp:unconfined \
+		intravirt-env
+```
+
+## Runq (Unless you need signal delivery, not reuqired for AE)
+You can download our modified runq from [here](https://github.com/endokernel/runq/releases/tag/v1) and follow the instructions to configure it with local docker.
+
+Please note that the benchmark results when running in runq differ from those on a physical machine because it is based on QEMU. Not all test items can run properly in QEMU (e.g., NGINX with large file).
 
 ## Baremetal Run
 ### Requirement
@@ -217,5 +232,3 @@ $ cd script
 $ ./cleanup.sh
 ```
 
-## TODO:
-- Safe-sandbox test run script is missing.
